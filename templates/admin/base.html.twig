@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+    {% block stylesheets %}
+    {% endblock %}
+
+    {% block javascripts %}
+        {% block importmap %}{{ importmap('app') }}{% endblock %}
+    {% endblock %}
+</head>
+<body>
+{#{% if is_granted('ROLE_USER') %}#}
+<nav class="navbar navbar-light bg-light p-3">
+    <div class="d-flex col-12 col-md-3 col-lg-2 mb-md-2 mb-lg-0 flex-wrap flex-md-nowrap justify-content-between">
+        <a class="navbar-brand" href="{{ path('admin_dashboard') }}">
+            Tableau de bord
+        </a>
+        <button class="navbar-toggler d-md-none collapsed mb-md-3" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+    <div class="col-12 col-md-5 col-lg-8 d-flex align-items-center justify-content-md-end mt-3 mt-md-0">
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Fabio
+            </button>
+            <ul class="dropdown-menu dropdown-menu-md-end">
+                <li><a class="dropdown-item" href="#">Déconnexion</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+{#{% endif %}#}
+
+<div class="container-fluid">
+    <div class="row">
+{#        {% if is_granted('ROLE_USER') %}#}
+            {% include "admin/partials/_sidebar.html.twig" %}
+{#        {% endif %}#}
+        <main class="{{ is_granted('ROLE_USER') ? "col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4" : "col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4"}}">
+            {% block body %} {% endblock %}
+        </main>
+    </div>
+</div>
+</body>
+</html>

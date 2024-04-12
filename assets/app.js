@@ -1,5 +1,6 @@
 import './bootstrap.js';
-import './js/bootstrap.min';
+import './js/bootstrap.bundle.min.js';
+import './js/sidebar-chevron.js';
 /*
  * Welcome to your app's main JavaScript file!
  *

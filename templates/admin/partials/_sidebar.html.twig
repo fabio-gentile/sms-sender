@@ -1,0 +1,33 @@
+{% block stylesheets %}
+    <style>
+        .collapse:not(.show) {
+            min-height: calc(100dvh - 72px);
+        }
+    </style>
+{% endblock %}
+
+<nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+    <div class="position-sticky">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="#">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    <span class="ml-2">Accueil</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="sidebar__sms" data-bs-toggle="collapse" href="#collapseSMS" data-bs-target="#collapseSMS" aria-expanded="false" aria-controls="collapseSMS">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                    <span class="ml-2">SMS</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>
+                    </svg>
+                </a>
+                <ul class="collapse nav" id="collapseSMS">
+                    <li class="nav-item w-100"><a class="nav-link" href="{{ path('admin_sms_new') }}">Envoyer un SMS</a></li>
+                    <li class="nav-item w-100"><a class="nav-link" href="{{ path('admin_sms') }}">Voir les SMS</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>
