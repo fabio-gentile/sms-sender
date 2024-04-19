@@ -15,21 +15,25 @@
 </head>
 <body>
 {#{% if is_granted('ROLE_USER') %}#}
-<nav class="navbar navbar-light bg-light p-3">
-    <div class="d-flex col-12 col-md-3 col-lg-2 mb-md-2 mb-lg-0 flex-wrap flex-md-nowrap justify-content-between">
-        <a class="navbar-brand" href="{{ path('admin_dashboard') }}">
-            Tableau de bord
-        </a>
-        <button class="navbar-toggler d-md-none collapsed mb-md-3" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-light bg-white p-3">
+    <div class="d-flex col-12 col-md-3 col-lg-2 flex-wrap align-items-center flex-md-nowrap justify-content-md-between gap-md-0 gap-4">
+        <button class="navbar-toggler d-md-none collapsed mb-md-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar__open" aria-controls="offcanvasExample">
             <span class="navbar-toggler-icon"></span>
         </button>
+        <a class="navbar-brand h1 mb-0" href="{{ path('admin_dashboard') }}">
+            Titre du site
+        </a>
     </div>
-    <div class="col-12 col-md-5 col-lg-8 d-flex align-items-center justify-content-md-end mt-3 mt-md-0">
+    <div class="col-12 col-md-5 col-lg-8 d-flex align-items-center justify-content-md-end mt-3 mt-md-0 d-none d-md-flex">
         <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Fabio
+            <button class="btn btn-secondary border-0 shadow-none dropdown-toggle d-flex align-items-center gap-3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <span class="d-flex flex-column text-start">
+                    <span>Fabio</span>
+                    <span class="text-black-50">Administrateur</span>
+                </span>
             </button>
-            <ul class="dropdown-menu dropdown-menu-md-end">
+            <ul class="dropdown-menu dropdown-menu-md-end w-100">
                 <li><a class="dropdown-item" href="#">Déconnexion</a></li>
             </ul>
         </div>
@@ -37,12 +41,12 @@
 </nav>
 {#{% endif %}#}
 
-<div class="container-fluid">
-    <div class="row">
+<div class="container-fluid bg-light">
+    <div class="d-flex">
 {#        {% if is_granted('ROLE_USER') %}#}
             {% include "admin/partials/_sidebar.html.twig" %}
 {#        {% endif %}#}
-        <main class="{{ is_granted('ROLE_USER') ? "col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4" : "col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4"}}">
+        <main id="main__container" class="{{ is_granted('ROLE_USER') ? "col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4" : "col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4"}}">
             {% block body %} {% endblock %}
         </main>
     </div>

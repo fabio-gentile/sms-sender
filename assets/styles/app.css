@@ -2,3 +2,33 @@ body {
     background-color: skyblue;
     min-height: 100dvh;
 }
+
+#sidebar {
+    width: 300px;
+}
+
+
+.offcanvas {
+    --bs-offcanvas-width: 300px !important;
+}
+
+.blue-bg__active {
+    background-color: #0094FF !important;
+    color: #ffffff !important;
+}
+
+.bi-chevron-down {
+    transition: all .2s ease-in-out;
+}
+
+.sidebar__collapse {
+    margin-left: 2.5rem;
+}
+
+.sidebar__collapse a:hover {
+    text-decoration: underline;
+}
+
+#main__container {
+    max-width: calc(100% - 300px) !important;
+}
