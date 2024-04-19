@@ -4,13 +4,18 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber;
+use libphonenumber\PhoneNumber;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[ORM\HasLifecycleCallbacks]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -46,6 +51,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $slug = null;
 
     #[ORM\Column(type: 'phone_number')]
+    #[AssertPhoneNumber()]
     private ?PhoneNumber $phoneNumber = null;
 
     public function getId(): ?int
@@ -164,6 +170,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->slug;
     }
 
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function initializeSlug(): void
+    {
+        if (empty($this->slug)) {
+            $slugger = new AsciiSlugger();
+            $this->slug = $slugger->slug(strtolower($this->firstname) . ' ' . strtolower($this->lastname) . ' ' . uniqid());
+        }
+    }
+
     public function setSlug(string $slug): static
     {
         $this->slug = $slug;
@@ -186,4 +202,5 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->phoneNumber = $phoneNumber;
     }
+
 }
