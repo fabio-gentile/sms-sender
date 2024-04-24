@@ -6,9 +6,11 @@ use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
+use Faker\Generator;
 use libphonenumber\PhoneNumber;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\String\Slugger\AsciiSlugger;
+use libphonenumber\PhoneNumberUtil;
 
 class AppFixtures extends Fixture
 {
@@ -34,19 +36,21 @@ class AppFixtures extends Fixture
     }
 
     /**
-     * @param \Faker\Generator $faker
+     * @param Generator $faker
      * @param AsciiSlugger $slugger
      * @param ObjectManager $manager
      * @return void
      */
-    public function createUser(\Faker\Generator $faker, AsciiSlugger $slugger, ObjectManager $manager, bool $admin = false): void
+    public function createUser(Generator $faker, AsciiSlugger $slugger, ObjectManager $manager,bool $admin = false): void
     {
         $user = new User();
+        $phoneNumberUtil = PhoneNumberUtil::getInstance();
         $firstname = $faker->firstName;
         $lastname = $faker->lastName;
 
         $phoneNumber = new PhoneNumber();
         $countryCode = $faker->randomElement([32, 33, 44, 49, 39, 34]);
+        $countryIso = $phoneNumberUtil->getRegionCodeForCountryCode($countryCode);
         $phoneNumber->setCountryCode($countryCode)
             ->setNationalNumber($faker->numberBetween(100000000, 999999999));
         $user->setEmail($faker->email)
@@ -58,7 +62,7 @@ class AppFixtures extends Fixture
             )
             ->setFirstname($firstname)
             ->setLastname($lastname)
-            ->setCountry($countryCode)
+            ->setCountry($countryIso)
             ->setSlug($slugger->slug(strtolower($firstname) . ' ' . strtolower($lastname) . ' ' . uniqid()))
             ->setPhoneNumber($phoneNumber);
 

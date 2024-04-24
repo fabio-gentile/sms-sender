@@ -14,6 +14,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Exception\TooManyLoginAttemptsAuthenticationException;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use libphonenumber\PhoneNumberUtil;
 
 class AuthController extends AbstractController
 {
@@ -40,7 +41,7 @@ class AuthController extends AbstractController
     }
 
     #[Route('/inscription', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher,  EntityManagerInterface $entityManager, TokenStorageInterface $tokenStorage): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher,  EntityManagerInterface $entityManager, TokenStorageInterface $tokenStorage, PhoneNumberUtil $phoneNumberUtil): Response
     {
         if ($this->getUser()) {
             return $this->redirectToRoute('admin_dashboard');
@@ -58,7 +59,8 @@ class AuthController extends AbstractController
                 )
             );
 
-            $user->setCountry($form->get('phoneNumber')->getData()->getCountryCode());
+            $countryIso = $phoneNumberUtil->getRegionCodeForCountryCode($form->get('phoneNumber')->getData()->getCountryCode());
+            $user->setCountry($countryIso);
 //            $user->setRoles(['ROLE_ADMIN']);
             $entityManager->persist($user);
             $entityManager->flush();
