@@ -1,5 +1,4 @@
 body {
-    background-color: skyblue;
     min-height: 100dvh;
 }
 
@@ -29,6 +28,37 @@ body {
     text-decoration: underline;
 }
 
-#main__container {
+.main__container-width {
     max-width: calc(100% - 300px) !important;
+}
+
+.btn-secondary {
+    border-color: #000 !important;
+}
+
+svg path, svg circle {
+    pointer-events: none;
+}
+
+.auth__background {
+    object-position: center center;
+    max-width: 100%;
+    position: relative;
+}
+
+.auth__backdrop::after {
+    background-color: rgba(59, 130, 246, .5);
+    content: '';
+    display: block;
+    height: 100%;
+    position: absolute;
+    width: 100%;
+}
+
+.auth__backdrop {
+    background-image: url("../images/auth-background.jpg");
+    background-position: center center;
+    background-size: cover;
+    position: relative;
+    max-width: 50%;
 }

@@ -13,7 +13,7 @@
         {% block importmap %}{{ importmap('app') }}{% endblock %}
     {% endblock %}
 </head>
-<body>
+<body class="bg-light">
 {% if is_granted('ROLE_ADMIN') %}
 <nav class="navbar navbar-light bg-white p-3">
     <div class="d-flex col-12 col-md-3 col-lg-2 flex-wrap align-items-center flex-md-nowrap justify-content-md-between gap-md-0 gap-4">
@@ -46,11 +46,11 @@
 {% endif %}
 
 <div class="container-fluid bg-light">
-    <div class="d-flex">
+    <div class="{{ is_granted('ROLE_ADMIN') ? 'd-flex' : 'w-100'}}">
         {% if is_granted('ROLE_ADMIN') %}
             {% include "admin/partials/_sidebar.html.twig" %}
         {% endif %}
-        <main id="main__container" class="{{ is_granted('ROLE_ADMIN') ? "col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4" : "col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4"}}">
+        <main class="{{ is_granted('ROLE_ADMIN') ? "main__container-width col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4" : "w-100 px-md-4 py-4"}}">
             {% block body %} {% endblock %}
         </main>
     </div>

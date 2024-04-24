@@ -23,11 +23,14 @@ security:
                 interval: '5 minutes' # ... or in a custom period
             logout:
                 path: app_logout
-                target: /login
+                # where to redirect after logout
+                target: /connexion
             form_login:
                 # "app_login" is the name of the route created previously
                 login_path: app_login
                 check_path: app_login
+                enable_csrf: true
+
                 # where to redirect after logout
                 # target: app_any_route
             # activate different ways to authenticate

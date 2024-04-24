@@ -6,8 +6,8 @@ use App\Entity\User;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -49,7 +49,7 @@ class RegistrationFormType extends AbstractType
                 'preferred_country_choices' => ['BE', 'FR'],
                 'country_display_emoji_flag' => true,
                 'default_region' => 'FR',
-                'invalid_message' => 'Numéro de téléphone incorrect',
+                'invalid_message' => 'Veuillez renseigner un numéro de téléphone correct',
             ]);
         ;
     }
