@@ -64,6 +64,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[AssertPhoneNumber()]
     private ?PhoneNumber $phoneNumber = null;
 
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -211,6 +219,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPhoneNumber(?PhoneNumber $phoneNumber): void
     {
         $this->phoneNumber = $phoneNumber;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
     }
 
 }
