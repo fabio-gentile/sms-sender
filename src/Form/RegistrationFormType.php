@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\User;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -41,6 +42,16 @@ class RegistrationFormType extends AbstractType
                 'label' => 'Prénom',
                 'attr' => ['placeholder' => 'John']
             ])
+            ->add('language', ChoiceType::class, [
+                'label' => 'Langues',
+                'choices' => [
+                    'Français' => 'fr',
+                    'Nederlands' => 'nl',
+                    'English' => 'en',
+                    'Español' => 'es',
+                    'Italiano' => 'it',
+                ],
+            ])
             ->add('phoneNumber', PhoneNumberType::class, [
                 'label' => 'Numéro de téléphone',
                 'number_options' => ['attr' => ['placeholder' => '497123456']],
@@ -49,7 +60,7 @@ class RegistrationFormType extends AbstractType
                 'preferred_country_choices' => ['BE', 'FR'],
                 'country_display_emoji_flag' => true,
                 'default_region' => 'FR',
-                'invalid_message' => 'Veuillez renseigner un numéro de téléphone correct',
+                'invalid_message' => 'Veuillez renseigner un numéro de téléphone valide',
             ]);
         ;
     }

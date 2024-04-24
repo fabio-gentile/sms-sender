@@ -55,17 +55,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $lastname = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Country(message: "Veuillez renseigner un pays")]
     private ?string $country = null;
 
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
     #[ORM\Column(type: 'phone_number')]
-    #[AssertPhoneNumber()]
+    #[AssertPhoneNumber]
     private ?PhoneNumber $phoneNumber = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column(length: 255)]
+    #[Assert\Language(message: "Veuillez renseigner une langue")]
+    private ?string $language = null;
 
     public function __construct()
     {
@@ -224,6 +229,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
+    }
+
+    public function getLanguage(): ?string
+    {
+        return $this->language;
+    }
+
+    public function setLanguage(string $language): static
+    {
+        $this->language = $language;
+
+        return $this;
     }
 
 }

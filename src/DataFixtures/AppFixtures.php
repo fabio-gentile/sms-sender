@@ -51,6 +51,7 @@ class AppFixtures extends Fixture
         $phoneNumber = new PhoneNumber();
         $countryCode = $faker->randomElement([32, 33, 44, 49, 39, 34]);
         $countryIso = $phoneNumberUtil->getRegionCodeForCountryCode($countryCode);
+        $language = $faker->randomElement(['it', 'fr', 'nl', 'en', 'es']);
         $phoneNumber->setCountryCode($countryCode)
             ->setNationalNumber($faker->numberBetween(100000000, 999999999));
         $user->setEmail($faker->email)
@@ -63,7 +64,7 @@ class AppFixtures extends Fixture
             ->setFirstname($firstname)
             ->setLastname($lastname)
             ->setCountry($countryIso)
-            ->setSlug($slugger->slug(strtolower($firstname) . ' ' . strtolower($lastname) . ' ' . uniqid()))
+            ->setLanguage($language)
             ->setPhoneNumber($phoneNumber);
 
         if ($admin) {
