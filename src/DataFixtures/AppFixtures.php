@@ -28,7 +28,7 @@ class AppFixtures extends Fixture
 
         $this->createUser($faker, $slugger, $manager, true);
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             $this->createUser($faker, $slugger, $manager);
         }
 
