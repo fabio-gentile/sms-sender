@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SmsRepository::class)]
 class Sms
@@ -20,6 +21,7 @@ class Sms
     private ?string $content = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Choice(choices: ['auto', 'fr', 'nl', 'en', 'es', 'it'])]
     private ?string $language = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
@@ -29,6 +31,7 @@ class Sms
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Assert\GreaterThan("now - 1min", message: "Veuillez renseigner une date valide.")]
     private ?\DateTimeInterface $sentAt = null;
 
     /**

@@ -51,6 +51,15 @@
             {% include "admin/partials/_sidebar.html.twig" %}
         {% endif %}
         <main class="{{ is_granted('ROLE_ADMIN') ? "main__container-width col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4" : "w-100 px-md-4 py-4"}}">
+            {# message flash reçus par le controller #}
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ label }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            
             {% block body %} {% endblock %}
         </main>
     </div>

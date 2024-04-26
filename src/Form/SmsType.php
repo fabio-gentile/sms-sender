@@ -17,7 +17,7 @@ class SmsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $now = new \DateTime();
-        $minDate = $now->format('Y-m-d\TH:i:s');
+        $minDate = $now->format('Y-m-d\TH:i');
         $builder
             ->add('content', TextareaType::class, [
                 'label' => 'Message',
@@ -40,7 +40,8 @@ class SmsType extends AbstractType
                 'expanded' => true,
                 'attr' => [
                     'class' => 'd-flex flex-wrap gap-3 form-control py-3'
-                ]
+                ],
+                'invalid_message' => 'Veuillez renseigner une langue valide.'
             ])
             ->add('sentAt', DateTimeType::class, [
                 'widget' => 'single_text',
