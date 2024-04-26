@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use libphonenumber\PhoneNumber;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -72,9 +74,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Language(message: "Veuillez renseigner une langue")]
     private ?string $language = null;
 
+    /**
+     * @var Collection<int, SmsReference>
+     */
+    #[ORM\OneToMany(targetEntity: SmsReference::class, mappedBy: 'User')]
+    private Collection $smsReferences;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
+        $this->smsReferences = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -239,6 +248,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLanguage(string $language): static
     {
         $this->language = $language;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SmsReference>
+     */
+    public function getSmsReferences(): Collection
+    {
+        return $this->smsReferences;
+    }
+
+    public function addSmsReference(SmsReference $smsReference): static
+    {
+        if (!$this->smsReferences->contains($smsReference)) {
+            $this->smsReferences->add($smsReference);
+            $smsReference->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSmsReference(SmsReference $smsReference): static
+    {
+        if ($this->smsReferences->removeElement($smsReference)) {
+            // set the owning side to null (unless already changed)
+            if ($smsReference->getUser() === $this) {
+                $smsReference->setUser(null);
+            }
+        }
 
         return $this;
     }
