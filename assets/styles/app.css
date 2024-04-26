@@ -67,3 +67,19 @@ svg path, svg circle {
     position: relative;
     max-width: 50%;
 }
+
+.min-h-150px {
+    min-height: 150px !important;
+}
+
+#smsCounter {
+    width: 100px;
+    height: 50px;
+    pointer-events: none;
+    margin-right: 1rem;
+    left: 95%;
+}
+
+#smsCounter.excess {
+    color: red !important;
+}
