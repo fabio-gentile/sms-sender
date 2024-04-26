@@ -2,6 +2,8 @@ import './bootstrap.js';
 import './js/bootstrap.bundle.min.js';
 import './js/sidebar-chevron.js';
 import './js/password-toggler.js';
+import './js/preview-message.js';
+import './js/sms-counter.js';
 /*
  * Welcome to your app's main JavaScript file!
  *
