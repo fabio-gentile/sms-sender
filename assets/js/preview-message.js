@@ -15,6 +15,7 @@ inputContent.addEventListener('input', (e) => {
     btnSendSms.disabled = e.target.value.length < 1;
     updateSmsCounter(e.target.value)
 })
+
 const smsCounter = () => {
     inputContent.parentElement.classList.add('position-relative')
     inputContent.parentElement.classList.add('overflow-hidden')
@@ -83,3 +84,9 @@ const submitCountdown = () => {
 }
 
 btnSendSms.addEventListener('click', submitCountdown)
+
+document.querySelector('form').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        e.preventDefault()
+    }
+})
