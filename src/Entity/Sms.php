@@ -21,7 +21,7 @@ class Sms
     private ?string $content = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\Choice(choices: ['auto', 'fr', 'nl', 'en', 'es', 'it'])]
+    #[Assert\Choice(choices: ['auto', 'fr', 'nl', 'en-US', 'es', 'it'])]
     private ?string $language = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
@@ -30,8 +30,7 @@ class Sms
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Assert\GreaterThan("now - 1min", message: "Veuillez renseigner une date valide.")]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $sentAt = null;
 
     /**
@@ -40,10 +39,23 @@ class Sms
     #[ORM\OneToMany(targetEntity: SmsReference::class, mappedBy: 'Sms')]
     private Collection $smsReferences;
 
+    /**
+     * @var Collection<int, SmsTranslation>
+     */
+    #[ORM\OneToMany(targetEntity: SmsTranslation::class, mappedBy: 'sms', orphanRemoval: true)]
+    private Collection $smsTranslations;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: false)]
+    private ?\DateTimeInterface $scheduledAt = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $status = null;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->smsReferences = new ArrayCollection();
+        $this->smsTranslations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -137,6 +149,60 @@ class Sms
                 $smsReference->setSms(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SmsTranslation>
+     */
+    public function getSmsTranslations(): Collection
+    {
+        return $this->smsTranslations;
+    }
+
+    public function addSmsTranslation(SmsTranslation $smsTranslation): static
+    {
+        if (!$this->smsTranslations->contains($smsTranslation)) {
+            $this->smsTranslations->add($smsTranslation);
+            $smsTranslation->setSms($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSmsTranslation(SmsTranslation $smsTranslation): static
+    {
+        if ($this->smsTranslations->removeElement($smsTranslation)) {
+            // set the owning side to null (unless already changed)
+            if ($smsTranslation->getSms() === $this) {
+                $smsTranslation->setSms(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getScheduledAt(): ?\DateTimeInterface
+    {
+        return $this->scheduledAt;
+    }
+
+    public function setScheduledAt(\DateTimeInterface $scheduledAt): static
+    {
+        $this->scheduledAt = $scheduledAt;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?string $status): static
+    {
+        $this->status = $status;
 
         return $this;
     }

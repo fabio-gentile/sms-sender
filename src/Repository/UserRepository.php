@@ -38,12 +38,73 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->getEntityManager()->flush();
     }
 
-    public function findNewest() : ?array
+    /**
+     * Get the latests registered users
+     * @return array|null
+     */
+    public function findLatestsRegistered() : ?array
     {
         return $this->createQueryBuilder('u')
             ->orderBy('u.createdAt', 'DESC')
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * Get all distinct languages from the user's table
+     * @return array|null
+     */
+    public function findDistinctLanguages() : ?array
+    {
+        return $this->createQueryBuilder('u')
+            ->select('u.language')
+            ->distinct()
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Find all users by specific language
+     * @param string $language
+     * @return array|null
+     */
+    public function findByLanguage(string $language) : ?array
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.language = :language')
+            ->setParameter('language', $language)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Get user phone number by user
+     * @param User $user
+     * @return mixed
+     */
+    public function findPhoneNumberById(User $user) : mixed
+    {
+        return $this->createQueryBuilder('u')
+            ->select('u.phoneNumber')
+            ->where('u.id = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    /**
+     * Get user language by user
+     * @param User $user
+     * @return string|null
+     */
+    public function findLanguageById(User $user) : ?string
+    {
+        return $this->createQueryBuilder('u')
+            ->select('u.language')
+            ->where('u.id = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
     //    /**

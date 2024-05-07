@@ -21,6 +21,18 @@ class SmsRepository extends ServiceEntityRepository
         parent::__construct($registry, Sms::class);
     }
 
+    /**
+     * Get all unset sms.
+     * @return array|null
+     */
+    public function findUnsetSms() : ?array
+    {
+        return $this->createQueryBuilder('s')
+            ->where('s.sentAt IS NULL')
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Sms[] Returns an array of Sms objects
     //     */
