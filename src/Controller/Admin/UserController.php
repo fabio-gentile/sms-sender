@@ -14,7 +14,7 @@ class UserController extends AbstractController
     #[Route('/admin/users', name: 'admin_users')]
     public function index(UserRepository $userRepository, Request $request, PaginatorInterface $paginator): Response
     {
-        $allUsers = $userRepository->findNewest();
+        $allUsers = $userRepository->findLatestsRegistered();
         $USER_PER_PAGE = 10;
         $users = $paginator->paginate(
             $allUsers,

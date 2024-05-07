@@ -47,7 +47,7 @@ class RegistrationFormType extends AbstractType
                 'choices' => [
                     'Français' => 'fr',
                     'Nederlands' => 'nl',
-                    'English' => 'en',
+                    'English' => 'en-US',
                     'Español' => 'es',
                     'Italiano' => 'it',
                 ],

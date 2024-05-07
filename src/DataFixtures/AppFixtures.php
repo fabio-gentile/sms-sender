@@ -28,22 +28,22 @@ class AppFixtures extends Fixture
         $faker = Factory::create('fr_FR');
 
         // Création de 100 utilisateurs
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 12; $i++) {
             $this->createUser($faker, $manager);
         }
 
         $manager->flush();
 
         // Création de 10 messages
-        for ($i = 0; $i < 10; $i++) {
-            $sms = $this->createSms($faker, $manager);
-
-            // Création d'au moins 50 références SMS pour chaque message
-            for ($j = 0; $j < 50; $j++) {
-                $user = $this->getRandomUser($manager);
-                $this->createSmsReference($faker, $manager, $user, $sms);
-            }
-        }
+//        for ($i = 0; $i < 10; $i++) {
+//            $sms = $this->createSms($faker, $manager);
+//
+//            // Création d'au moins 50 références SMS pour chaque message
+//            for ($j = 0; $j < 12; $j++) {
+//                $user = $this->getRandomUser($manager);
+//                $this->createSmsReference($faker, $manager, $user, $sms);
+//            }
+//        }
 
         $manager->flush();
     }
@@ -58,7 +58,7 @@ class AppFixtures extends Fixture
         $phoneNumber = new PhoneNumber();
         $countryCode = $faker->randomElement([32, 33, 44, 49, 39, 34]);
         $countryIso = $phoneNumberUtil->getRegionCodeForCountryCode($countryCode);
-        $language = $faker->randomElement(['it', 'fr', 'nl', 'en', 'es']);
+        $language = $faker->randomElement(['it', 'fr', 'nl', 'en-US', 'es']);
         $phoneNumber->setCountryCode($countryCode)
             ->setNationalNumber($faker->numberBetween(100000000, 999999999));
         $user->setEmail($faker->email)
@@ -81,8 +81,9 @@ class AppFixtures extends Fixture
     {
         $sms = new Sms();
         $sms->setContent($faker->text(160))
-            ->setLanguage($faker->randomElement(['it', 'fr', 'nl', 'en', 'es', 'auto']))
-            ->setSentAt($faker->dateTimeBetween('-2 month', '1 month'));
+            ->setLanguage($faker->randomElement(['it', 'fr', 'nl', 'en-US', 'es', 'auto']))
+//            ->setSentAt($faker->dateTimeBetween('-2 month', '1 month'))
+        ;
 
         $manager->persist($sms);
 

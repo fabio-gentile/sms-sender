@@ -6,9 +6,7 @@ use App\Entity\Sms;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\RadioType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -17,7 +15,7 @@ class SmsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $now = new \DateTime();
-        $minDate = $now->format('Y-m-d\TH:i');
+        $minDate = $now->modify('-2 minute')->format('Y-m-d\TH:i');
         $builder
             ->add('content', TextareaType::class, [
                 'label' => 'Message',
@@ -32,7 +30,7 @@ class SmsType extends AbstractType
                     'Automatique' => 'auto',
                     'Français' => 'fr',
                     'Nederlands' => 'nl',
-                    'English' => 'en',
+                    'English' => 'en-US',
                     'Español' => 'es',
                     'Italiano' => 'it',
                 ],
@@ -43,10 +41,10 @@ class SmsType extends AbstractType
                 ],
                 'invalid_message' => 'Veuillez renseigner une langue valide.'
             ])
-            ->add('sentAt', DateTimeType::class, [
+            ->add('scheduledAt', DateTimeType::class, [
                 'widget' => 'single_text',
                 'label' => 'Planifier l\'envoi',
-                'data' => $now,
+                'data' => new \DateTime(),
                 'attr' => [
                     'min' => $minDate
                 ]
