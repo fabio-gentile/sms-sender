@@ -1,16 +1,11 @@
-import './bootstrap.js';
 import './js/bootstrap.bundle.min.js';
-import './js/sidebar-chevron.js';
-import './js/password-toggler.js';
-import './js/preview-message.js';
-import './js/sms-counter.js';
 /*
  * Welcome to your app's main JavaScript file!
  *
- * This file will be included onto the page via the importmap() Twig function,
- * which should already be in your base.html.twig.
+ * We recommend including the built version of this JavaScript file
+ * (and its CSS file) in your base layout (base.html.twig).
  */
+
+// any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.css';
 import './styles/bootstrap.min.css';
-
-console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
