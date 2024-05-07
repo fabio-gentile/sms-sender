@@ -20,7 +20,11 @@
                 <th scope="row">{{ user.lastname }}</th>
                 <td>{{ user.email }}</td>
                 <td class="d-lg-table-cell d-none">+{{ user.phoneNumber.countryCode }}{{ user.phoneNumber.nationalNumber }}</td>
+                {% if user.language == 'en-US' %}
+                <td class="d-sm-table-cell d-none">Anglais</td>
+                {% else %}
                 <td class="d-sm-table-cell d-none">{{ user.language | language_name('fr') | capitalize }}</td>
+                {% endif %}
             </tr>
             {% endfor %}
             </tbody>
