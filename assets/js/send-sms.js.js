@@ -88,7 +88,7 @@ btnSendSms.addEventListener('click', submitCountdown)
 document.querySelector('form').addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
         const textarea = document.querySelector('textarea')
-        
+
         if (e.target !== textarea) {
             e.preventDefault()
         }

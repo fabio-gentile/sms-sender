@@ -1,5 +1,5 @@
-const GSM_7_BIT_CHARS = "@£$¥èéùìòÇ\\nØø\\rÅåΔ_ΦΓΛΩΠΨΣΘΞÆæßÉ !\\\"#¤%&'()*+,-./0123456789:;<=>?¡ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÑÜ§¿abcdefghijklmnopqrstuvwxyzäöñüà";
-const GSM_7_BIT_EX_CHAR = "\\^{}\\\\\\[~\\]|€";
+const GSM_7_BIT_CHARS = "@£$¥èéùìòÇØøÅåΔ_ΦΓΛΩΠΨΣΘΞÆæßÉ !\\\"#¤%&'()*+,-./0123456789:;<=>?¡ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÑÜ§¿abcdefghijklmnopqrstuvwxyzäöñüà";
+const GSM_7_BIT_EX_CHAR = "\\^{}\\\\\\[~\\]|€\\r\\n";
 const GSM_7_BIT_REG_EXP = RegExp("^[" + GSM_7_BIT_CHARS + "]*$");
 const GSM_7_BIT_EX_REG_EXP = RegExp("^[" + GSM_7_BIT_CHARS + GSM_7_BIT_EX_CHAR + "]*$");
 const GSM_7_BIT_EX_ONLY_REG_EXP = RegExp("^[\\" + GSM_7_BIT_EX_CHAR + "]*$");
