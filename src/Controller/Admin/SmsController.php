@@ -8,11 +8,13 @@ use App\Entity\SmsTranslation;
 use App\Form\SmsType;
 use App\Message\SendSms;
 use App\Repository\SmsReferenceRepository;
+use App\Repository\SmsRepository;
 use App\Repository\SmsTranslationRepository;
 use App\Repository\UserRepository;
 use DeepL\DeepLException;
 use Doctrine\ORM\EntityManagerInterface;
 use Instasent\SMSCounter\SMSCounter;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,10 +26,19 @@ use DeepL\Translator;
 class SmsController extends AbstractController
 {
     #[Route('/admin/sms', name: 'admin_sms')]
-    public function index(SmsReferenceRepository $smsReferenceRepository): Response
+    public function index(SmsRepository $smsRepository, Request $request, PaginatorInterface $paginator): Response
     {
+        $allSms = $smsRepository->findLatests();
+        $SMS_PER_PAGE = 10;
+        $sms = $paginator->paginate(
+            $allSms,
+            $request->query->getInt('page', 1),
+            $SMS_PER_PAGE
+        );
         return $this->render('/admin/sms/index.html.twig', [
             'controller_name' => 'SmsController',
+            'allSms' => $sms,
+            'totalSms' => count($allSms)
         ]);
     }
 
@@ -104,15 +115,33 @@ class SmsController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/sms/{id}', name: 'admin_sms_show')]
-    public function show(SmsReferenceRepository $smsReferenceRepository, Sms $sms, SmsTranslationRepository $smsTranslationRepository): Response
+    #[Route('/admin/sms/{id}', name: 'admin_sms_show', requirements: ['id' => '\d+'])]
+    public function show(Request $request, EntityManagerInterface $entityManager, Sms $sms, UserRepository $userRepository, SmsReferenceRepository $smsReferenceRepository): Response
     {
-//        dd($sms);
-        $smsReferences = $smsReferenceRepository->findAllSentSms($sms);
-        $smsReferencesCount = $smsReferenceRepository->findCountSms($sms);
-        dd($smsReferences, $smsReferencesCount, ($smsReferencesCount) === count($smsReferences));
-        return $this->render('/admin/sms/index.html.twig', [
-            'controller_name' => 'SmsController',
+        $totalUsers = $userRepository->findCountUsers();
+        $users = $smsReferenceRepository->findAllSentSms($sms);
+        return $this->render('/admin/sms/show.html.twig', [
+            'sms' => $sms,
+            'totalUsers' => $totalUsers,
+            'users' => count($users)
+        ]);
+    }
+
+    #[Route('/admin/sms/{id}/utilisateurs', name: 'admin_sms_show_users', requirements: ['id' => '\d+'])]
+    public function showUsers(Request $request, EntityManagerInterface $entityManager, Sms $sms): Response
+    {
+
+        return $this->render('/admin/sms/show.html.twig', [
+            'sms' => $sms
+        ]);
+    }
+
+    #[Route('/admin/sms/{id}/edit', name: 'admin_sms_edit', requirements: ['id' => '\d+'])]
+    public function edit(Request $request, EntityManagerInterface $entityManager, Sms $sms): Response
+    {
+
+        return $this->render('/admin/sms/show.html.twig', [
+            'sms' => $sms
         ]);
     }
 }

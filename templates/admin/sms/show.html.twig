@@ -1,0 +1,83 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}SMS n°{{ sms.id }}{% endblock %}
+
+{% block body %}
+    <h1 class="h-2 mb-3">{{ block('title') }}</h1>
+    {{ dump(sms) }}
+    <div class="d-grid gap-3 gap-md-4">
+        {% if sms.status == 'SENT' %}
+        <span class="badge bg-success text-regular w-fit">Envoyé</span>
+        {% elseif sms.status == 'PROCESSING' %}
+        <span class="badge bg-warning text-regular w-fit">En cours d'envoi</span>
+        {% elseif sms.status == 'CANCELLED' %}
+        <span class="badge bg-danger text-regular w-fit">Annulé</span>
+        {% else %}
+        <span class="badge bg-info text-regular w-fit">En attente</span>
+        {% endif %}
+        <div>
+            <label for="sms_content" class="form-label required">Message</label>
+            <textarea name="content" id="sms_content" disabled class="min-h-150px form-control">{{ sms.content }}</textarea>
+        </div>
+        <div class="d-grid gap-4">
+            <div class="w-fit">
+                <p>Utilisateurs concernés</p>
+                <a href="{{ path('admin_sms_show_users', {id: sms.id}) }}">{{ users }} sur {{ totalUsers }} utilisateur{{ users > 0 ? 's' : '' }}</a>
+            </div>
+            <div class="d-flex flex-row flex-wrap gap-3">
+                <div class="w-fit">
+                    <p>Langue</p>
+                    {% if sms.language == 'auto' %}
+                    <span class="text-black-50">Automatique</span>
+                    {% else %}
+                    <span class="text-black-50">{{ sms.language | language_name('fr') | capitalize }}</span>
+                    {% endif %}
+                </div>
+                {% if sms.modifiedAt %}
+                <div class="w-fit">
+                    <p>Dernière modification</p>
+                    <span class="text-black-50">{{ sms.modifiedAt | format_datetime('full', 'medium', locale='fr') }}</span>
+                </div>
+                {% endif %}
+                {% if sms.sentAt %}
+                <div class="w-fit">
+                    <p>Date d’envoi</p>
+                    <span class="text-black-50">{{ sms.sentAt | format_datetime('full', 'medium', locale='fr') }}</span>
+                </div>
+                {% endif %}
+            </div>
+            <div class="d-flex gap-3 flex-wrap">
+                <button id="btnPreviewModal" type="button" class="btn btn-secondary md-w-fit" data-bs-toggle="modal" data-bs-target="#previewModal">
+                    Prévisualiser
+                </button>
+                {% if sms.status != 'SENT' %}
+                <a role="button" href="{{ path('admin_sms_edit', {id: sms.id}) }}" class="btn btn-warning md-w-fit">Modifier</a>
+                <a role="button" href="{{ path('admin_sms_edit', {id: sms.id}) }}" class="btn btn-warning md-w-fit">Ann</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Preview Modal -->
+    <div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Prévisualisation du SMS</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body preview" style="white-space: pre-wrap">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('smsPreview') }}
+{% endblock %}

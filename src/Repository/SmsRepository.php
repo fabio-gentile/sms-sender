@@ -33,6 +33,18 @@ class SmsRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * Get the latests sms.
+     * @return array|null
+     */
+    public function findLatests() : ?array
+    {
+        return $this->createQueryBuilder('s')
+            ->orderBy('s.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Sms[] Returns an array of Sms objects
     //     */

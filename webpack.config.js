@@ -24,6 +24,7 @@ Encore
     .addEntry('sidebarChevron', './assets/js/sidebar-chevron.js')
     .addEntry('passwordToggler', './assets/js/password-toggler.js')
     .addEntry('sendSms', './assets/js/send-sms.js')
+    .addEntry('smsPreview', './assets/js/sms-preview.js')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     // .splitEntryChunks()

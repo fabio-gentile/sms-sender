@@ -36,7 +36,7 @@ class SendSmsService
         foreach ($unsentSmsList as $unsentSms) {
             /* @var $unsentSms Sms */
             if ($unsentSms->getScheduledAt()->getTimestamp() <= (new \DateTime())->getTimestamp()) {
-                $unsentSms->setStatus('PROCCESSING');
+                $unsentSms->setStatus('PROCESSING');
                 $this->entityManager->persist($unsentSms);
                 $this->entityManager->flush();
                 $this->processUnsentSms($unsentSms);
