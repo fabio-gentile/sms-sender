@@ -83,3 +83,26 @@ svg path, svg circle {
 #smsCounter.excess {
     color: red !important;
 }
+
+.text-sm {
+    font-size: 0.75rem;
+}
+
+a.disabled {
+    pointer-events: none;
+    cursor: default;
+}
+
+.text-regular {
+    font-size: 1rem !important;
+}
+
+.md-w-fit {
+    @media all and (min-width: 768px) {
+        width: fit-content !important;
+    }
+}
+
+.w-fit {
+    width: fit-content !important;
+}
