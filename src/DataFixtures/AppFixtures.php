@@ -28,22 +28,22 @@ class AppFixtures extends Fixture
         $faker = Factory::create('fr_FR');
 
         // Création de 100 utilisateurs
-        for ($i = 0; $i < 12; $i++) {
+        for ($i = 0; $i < 25; $i++) {
             $this->createUser($faker, $manager);
         }
 
         $manager->flush();
 
         // Création de 10 messages
-//        for ($i = 0; $i < 10; $i++) {
-//            $sms = $this->createSms($faker, $manager);
-//
-//            // Création d'au moins 50 références SMS pour chaque message
-//            for ($j = 0; $j < 12; $j++) {
-//                $user = $this->getRandomUser($manager);
-//                $this->createSmsReference($faker, $manager, $user, $sms);
-//            }
-//        }
+        for ($i = 0; $i < 10; $i++) {
+            $sms = $this->createSms($faker, $manager);
+
+            // Création d'au moins 50 références SMS pour chaque message
+            for ($j = 0; $j < rand(5, 15); $j++) {
+                $user = $this->getRandomUser($manager);
+                $this->createSmsReference($faker, $manager, $user, $sms);
+            }
+        }
 
         $manager->flush();
     }
@@ -82,6 +82,7 @@ class AppFixtures extends Fixture
         $sms = new Sms();
         $sms->setContent($faker->text(160))
             ->setLanguage($faker->randomElement(['it', 'fr', 'nl', 'en-US', 'es', 'auto']))
+            ->setScheduledAt(new \DateTime())
 //            ->setSentAt($faker->dateTimeBetween('-2 month', '1 month'))
         ;
 

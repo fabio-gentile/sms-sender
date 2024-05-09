@@ -18,6 +18,15 @@ use libphonenumber\PhoneNumberUtil;
 
 class AuthController extends AbstractController
 {
+    #[Route('/', name: 'app_home')]
+    public function index(): Response
+    {
+        if ($this->getUser()) {
+            return $this->redirectToRoute('admin_dashboard');
+        }
+        return $this->redirectToRoute('app_login');
+    }
+
     #[Route('/connexion', name: 'app_login')]
     public function login(AuthenticationUtils $utils): Response
     {

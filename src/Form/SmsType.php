@@ -34,7 +34,6 @@ class SmsType extends AbstractType
                     'Español' => 'es',
                     'Italiano' => 'it',
                 ],
-                'data' => 'auto',
                 'expanded' => true,
                 'attr' => [
                     'class' => 'd-flex flex-wrap gap-3 form-control py-3'
@@ -44,7 +43,6 @@ class SmsType extends AbstractType
             ->add('scheduledAt', DateTimeType::class, [
                 'widget' => 'single_text',
                 'label' => 'Planifier l\'envoi',
-                'data' => new \DateTime(),
                 'attr' => [
                     'min' => $minDate
                 ]

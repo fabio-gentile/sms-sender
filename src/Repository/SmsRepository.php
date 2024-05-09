@@ -29,6 +29,9 @@ class SmsRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('s')
             ->where('s.sentAt IS NULL')
+            ->andWhere('s.status <> :status')
+            ->setParameter('status', 'CANCELLED')
+            ->orWhere('s.status IS NULL')
             ->getQuery()
             ->getResult();
     }

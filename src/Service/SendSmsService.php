@@ -24,7 +24,7 @@ class SendSmsService
     ) {}
 
     /**
-     * Start the proccess.
+     * Start the process.
      * @return void
      */
     public function startProcessing(): void

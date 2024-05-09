@@ -53,6 +53,20 @@ class SmsReferenceRepository extends ServiceEntityRepository
     }
 
     /**
+     * Get all users for the sms.
+     * @param Sms $sms
+     * @return array|null
+     */
+    public function findAllUsersBySms(Sms $sms) : ?array
+    {
+        return $this->createQueryBuilder('s')
+            ->where('s.Sms = :sms')
+            ->setParameter('sms', $sms)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
      * Get total count of all sms references by sms.
      * @param Sms $sms
      * @return int|null
@@ -65,6 +79,21 @@ class SmsReferenceRepository extends ServiceEntityRepository
             ->setParameter('sms', $sms)
             ->getQuery()
             ->getSingleScalarResult();
+    }
+
+    /**
+     * Delete all records by sms
+     * @param Sms $sms
+     * @return bool
+     */
+    public function deleteBySms(Sms $sms): bool
+    {
+        return $this->createQueryBuilder('s')
+            ->delete()
+            ->where('s.Sms = :sms')
+            ->setParameter('sms', $sms)
+            ->getQuery()
+            ->execute();
     }
 
     //    /**

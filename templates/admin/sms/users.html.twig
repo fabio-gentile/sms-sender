@@ -1,0 +1,38 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Liste des utilisateurs pour le SMS n°{{ sms.id }}{% endblock %}
+
+{% block body %}
+    <h1 class="h-2 mb-3">{{ block('title') }}</h1>
+    <div class="rounded bg-white w-100">
+        <table class="table shadow-none">
+            <thead>
+            <tr>
+                <th scope="col" class="text-black-50">Nom</th>
+                <th scope="col" class="text-black-50">Adresse email</th>
+                <th scope="col" class="d-lg-table-cell d-none text-black-50">Langue</th>
+                <th scope="col" class="d-sm-table-cell d-none text-black-50">Pays</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <th scope="row">{{ user.User.lastname }}</th>
+                    <td>{{ user.User.email }}</td>
+                    <td class="d-lg-table-cell d-none">+{{ user.User.phoneNumber.countryCode }}{{ user.User.phoneNumber.nationalNumber }}</td>
+                    {% if user.User.language == 'en-US' %}
+                        <td class="d-sm-table-cell d-none">Anglais</td>
+                    {% else %}
+                        <td class="d-sm-table-cell d-none">{{ user.User.language | language_name('fr') | capitalize }}</td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="d-flex justify-content-between align-items-center flex-wrap px-3">
+            <p class="m-0 text-black-50 fs-6">{{ totalUsers }} utilisateurs</p>
+            {{ knp_pagination_render(users) }}
+        </div>
+    </div>
+
+{% endblock %}

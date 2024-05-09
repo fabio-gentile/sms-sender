@@ -1,6 +1,6 @@
 {% extends 'admin/base.html.twig' %}
 
-{% block title %}SMS{% endblock %}
+{% block title %}Liste des SMS{% endblock %}
 
 {% block body %}
     <h1 class="h-2 mb-3">{{ block('title') }}</h1>
@@ -43,7 +43,7 @@
                     </td>
                     {% endif %}
 
-                    {% if sms.status %}
+                    {% if sms.status == 'SENT' or sms.status == 'CANCELLED' %}
                     <td class="text-end" colspan="2">
                         <a href="{{ path('admin_sms_show', {'id': sms.id}) }}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
@@ -51,7 +51,7 @@
                     </td>
                     {% else %}
                     <td class="text-end" colspan="2">
-                        <a href="{{ path('admin_sms_show', {'id': sms.id}) }}">
+                        <a href="{{ path('admin_sms_edit', {'id': sms.id}) }}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
                         </a>
                     </td>

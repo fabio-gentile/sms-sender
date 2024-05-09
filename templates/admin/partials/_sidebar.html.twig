@@ -13,7 +13,7 @@
     <div class="position-sticky">
         <ul class="nav flex-column gap-2">
             <li class="nav-item rounded overflow-hidden">
-                <a class="nav-link d-flex align-items-center gap-3 p-3 blue-bg__active" aria-current="page" href="#">
+                <a class="nav-link d-flex align-items-center gap-3 p-3 blue-bg__active" aria-current="page" href="{{ path('admin_dashboard') }}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layout-dashboard"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
                     <span class="ml-2">Tableau de bord</span>
                 </a>
@@ -49,7 +49,7 @@
                 </a>
                 <ul class="collapse nav sidebar__collapse" id="collapseUsers">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('admin_sms') }}">Voir les utilisateurs</a>
+                        <a class="nav-link" href="{{ path('admin_users') }}">Voir les utilisateurs</a>
                     </li>
                 </ul>
             </li>
@@ -67,7 +67,7 @@
             </div>
             <ul class="nav flex-column gap-2 pt-5">
                 <li class="nav-item rounded overflow-hidden">
-                    <a class="nav-link d-flex align-items-center gap-3 p-3 blue-bg__active" aria-current="page" href="#">
+                    <a class="nav-link d-flex align-items-center gap-3 p-3 blue-bg__active" aria-current="page" href="{{ path('admin_dashboard') }}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layout-dashboard"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
                         <span class="ml-2">Tableau de bord</span>
                     </a>
@@ -103,7 +103,7 @@
                     </a>
                     <ul class="collapse nav sidebar__collapse" id="collapseUsers">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ path('admin_sms') }}">Voir les utilisateurs</a>
+                            <a class="nav-link" href="{{ path('admin_users') }}">Voir les utilisateurs</a>
                         </li>
                     </ul>
                 </li>
@@ -114,8 +114,12 @@
                 <button class="btn btn-secondary border-0 shadow-none dropdown-toggle d-flex align-items-center gap-3" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                     <span class="d-flex flex-column text-start">
-                    <span>Fabio</span>
-                    <span class="text-black-50">Administrateur</span>
+                    <span>{{ app.user.lastname }}</span>
+                    <span class="text-black-50">
+                        {% if is_granted('ROLE_ADMIN') %}
+                            Administrateur
+                        {% endif %}
+                    </span>
                 </span>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-md-start">
