@@ -21,7 +21,7 @@ final class SendSmsSchedule implements ScheduleProviderInterface
     {
         return (new Schedule())
             ->add(
-                RecurringMessage::every('5 seconds', new SendSms(rand(1, 999999))),
+                RecurringMessage::every('1 minute', new SendSms(rand(1, 999999))),
             )
             ->stateful($this->cache)
         ;
