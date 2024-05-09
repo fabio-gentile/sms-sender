@@ -1,6 +1,117 @@
 {% extends 'admin/base.html.twig' %}
 
-{% block title %}Hello DashboardController!{% endblock %}
+{% block title %}Administration du site{% endblock %}
 {% block body %}
-    <h1 class="h-2">{{ block('title') }}</h1>
+    <h1 class="h-2 mb-3">{{ block('title') }}</h1>
+    <div class="d-grid gap-md-4 gap-3">
+        <div class="d-flex flex-wrap gap-3 flex-row">
+            <div class="bg-white rounded p-2 p-md-3 d-flex flex-row gap-3 align-items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                <div class="d-flex flex-column">
+                    <span class="fw-bold">{{ totalUsers > 0 ? totalUsers : 0 }}</span>
+                    <span>Utilisateurs</span>
+                </div>
+            </div>
+            <div class="bg-white rounded p-2 p-md-3 d-flex flex-row gap-3 align-items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                <div class="d-flex flex-column">
+                    <span class="fw-bold">{{ totalSms > 0 ? totalSms : 0 }}</span>
+                    <span>SMS envoyés</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="rounded bg-white w-100">
+            <table class="table shadow-none">
+                <thead>
+                <tr>
+                    <th scope="col" class="text-black-50">Nom</th>
+                    <th scope="col" class="text-black-50">Adresse email</th>
+                    <th scope="col" class="d-lg-table-cell d-none text-black-50">Langue</th>
+                    <th scope="col" class="d-sm-table-cell d-none text-black-50">Pays</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in users %}
+                    <tr>
+                        <th scope="row">{{ user.lastname }}</th>
+                        <td>{{ user.email }}</td>
+                        <td class="d-lg-table-cell d-none">+{{ user.phoneNumber.countryCode }}{{ user.phoneNumber.nationalNumber }}</td>
+                        {% if user.language == 'en-US' %}
+                            <td class="d-sm-table-cell d-none">Anglais</td>
+                        {% else %}
+                            <td class="d-sm-table-cell d-none">{{ user.language | language_name('fr') | capitalize }}</td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-between align-items-center flex-wrap px-3">
+                <p class="m-0 text-black-50 fs-6">{{ totalUsers }} utilisateurs</p>
+                {{ knp_pagination_render(users) }}
+            </div>
+        </div>
+        <div class="rounded bg-white w-100">
+            <table class="table shadow-none">
+                <thead>
+                <tr>
+                    <th scope="col" class="text-black-50" colspan="4">Message</th>
+                    <th scope="col" class="text-black-50 text-center" colspan="4">Status</th>
+                    <th scope="col" class="text-black-50 text-end" colspan="2">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for sms in allSms %}
+                    <tr>
+                        <th scope="row" colspan="4">{{ sms.content | u.truncate(20, '...') }}</th>
+                        {% if sms.status == 'SENT' %}
+                            <td class="text-uppercase text-center text-sm" colspan="4">
+                            <span class="badge rounded-pill bg-success">
+                                Envoyé
+                            </span>
+                            </td>
+                        {% elseif sms.status == 'PROCESSING' %}
+                            <td class="text-uppercase text-center text-sm" colspan="4">
+                            <span class="badge rounded-pill bg-info">
+                                En cours
+                            </span>
+                            </td>
+                        {% elseif sms.status == 'CANCELLED' %}
+                            <td class="text-uppercase text-center text-sm" colspan="4">
+                            <span class="badge rounded-pill bg-danger">
+                                Annulé
+                            </span>
+                            </td>
+                        {% else %}
+                            <td class="text-uppercase text-center text-sm" colspan="4">
+                            <span class="badge rounded-pill bg-warning">
+                                En attente
+                            </span>
+                            </td>
+                        {% endif %}
+
+                        {% if sms.status == 'SENT' or sms.status == 'CANCELLED' %}
+                            <td class="text-end" colspan="2">
+                                <a href="{{ path('admin_sms_show', {'id': sms.id}) }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                                </a>
+                            </td>
+                        {% else %}
+                            <td class="text-end" colspan="2">
+                                <a href="{{ path('admin_sms_edit', {'id': sms.id}) }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+                                </a>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-between align-items-center flex-wrap px-3">
+                <p class="m-0 text-black-50 fs-6">{{ totalSms }} sms</p>
+                {{ knp_pagination_render(allSms) }}
+            </div>
+        </div>
+    </div>
+
 {% endblock %}

@@ -48,6 +48,18 @@ class SmsRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * Get the total of sms.
+     * @return int|null
+     */
+    public function findCountSms() : ?int
+    {
+        return $this->createQueryBuilder('s')
+            ->select('COUNT(s)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
     //    /**
     //     * @return Sms[] Returns an array of Sms objects
     //     */
